@@ -15,9 +15,8 @@ import javafx.stage.Stage;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
-import static org.opencv.imgcodecs.Imgcodecs.CV_LOAD_IMAGE_GRAYSCALE;
 import org.opencv.core.Core;
-import javafx.embed.swing.SwingFXUtils;
+import org.opencv.imgproc.Imgproc;
 /**
  *
  * @author mogue
@@ -43,22 +42,23 @@ public class AIP1 extends Application{
         launch(args);
     }
     
-    public Image loadImage(){
-        URL url_img = getClass().getResource("hw1_atrium.hdr");
+    public Image loadImage(String pName){
+        URL url_img = getClass().getResource(pName);
         String ruta = url_img.getPath();
         Image imagenMostrar = null;
-        Mat imagen;
+        Mat imagen, imagen2;
          if (ruta.startsWith("/")) {
             ruta = ruta.substring(1);
         }
-         System.out.println(ruta);
-        imagen = Imgcodecs.imread(ruta,CV_LOAD_IMAGE_GRAYSCALE);
-        System.out.println(imagen);
+        ///System.out.println(ruta);
+        imagen = Imgcodecs.imread(ruta);
+        imagen2 = Imgcodecs.imread(ruta);
+        Imgproc.cvtColor(imagen2,  imagen, Imgproc.COLOR_RGB2GRAY);
+        //System.out.println(imagen);
         if(!imagen.empty()){
-            System.out.println("if");
             imagenMostrar = convertir(imagen);
         }else{
-            System.out.println("fuck!");
+            System.out.println("error al cargar la imagen");
         }
         return imagenMostrar;
     }
